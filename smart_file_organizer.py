@@ -41,8 +41,7 @@ def create_folder(folder_path: str) -> None:
     Args:
         folder_path: Path of the folder to create.
     """
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
+    os.makedirs(folder_path, exist_ok=True)
 
 
 def get_category(file_ext: str) -> str:

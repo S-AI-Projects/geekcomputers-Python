@@ -3,8 +3,33 @@ import argparse
 
 
 def generate_unique_name(directory: str, name: str) -> str:
-    """
-    Generate a unique name for a file or folder in the specified directory.
+    """Generate a unique name for a file or folder in the specified directory.
+
+    Contract & Preconditions:
+        - Precondition Source Line 46: `base_name, extension = os.path.splitext(name)`
+          splits name into stem and suffix.
+        - Precondition Source Line 47: `index = 1` starts suffix indexing at 1.
+        - Precondition Source Line 48: `while os.path.exists(...)` queries filesystem for collision.
+        - Precondition Source Line 49: `index += 1` increments on collision.
+        - Precondition Source Line 50: Returns first non-colliding formatted filename.
+
+    Decisive State Transition:
+        The loop guard `os.path.exists(os.path.join(directory, f"{base_name}_{index}{extension}"))`
+        is the decisive transition: while True, `index` advances; the moment it evaluates to
+        False (free filename slot detected), iteration halts and the unique name is returned.
+
+    Worked Example:
+        >>> import os, tempfile
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     # Simulate pre-existing files causing index collision:
+        ...     open(os.path.join(tmpdir, "report_1.txt"), "w").close()
+        ...     open(os.path.join(tmpdir, "report_2.txt"), "w").close()
+        ...     # Execution trace:
+        ...     # - index=1: "report_1.txt" exists (collision -> index=2)
+        ...     # - index=2: "report_2.txt" exists (collision -> index=3)
+        ...     # - index=3: "report_3.txt" does not exist (decisive exit)
+        ...     generate_unique_name(tmpdir, "report.txt")
+        'report_3.txt'
 
     Parameters:
     ----------

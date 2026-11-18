@@ -20,15 +20,26 @@ print("Chaliye Binod Karte Hai!")
 
 
 def checkBinod(file):  # Trying to find Binod In File Insted Of Manohar Ka Kotha
-    # master
+    """Check if the keyword 'binod' (case-insensitive) is present in the specified file.
+
+    Contract & Preconditions:
+        - Precondition Source Line 38: `with open(file, "r") as f:` requires readable file path.
+        - Precondition Source Line 40: `fileContent = f.read()` reads file as text.
+        - Precondition Source Line 42: `has_binod = "binod" in fileContent.lower()` checks case-insensitively.
+        - Precondition Source Line 44: prints congratulatory message if found.
+
+    Returns:
+        bool: True if 'binod' is in file, False otherwise.
+    """
     with open(file, "r") as f:
-        # master
         fileContent = f.read()
-    if "binod" in fileContent.lower():
+
+    # Responsibility simplified: extract explicit boolean flag for keyword detection
+    has_binod = "binod" in fileContent.lower()
+    if has_binod:
         print(f"**************Congratulations Binod found in {f}********************")
         return True
-    else:
-        return False
+    return False
 
 
 if __name__ == "__main__":

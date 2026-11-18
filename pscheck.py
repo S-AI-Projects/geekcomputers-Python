@@ -11,7 +11,13 @@
 import os
 import string
 
-import commands
+try:
+    import commands
+except ImportError:
+    import subprocess as commands
+
+if not hasattr(string, "split"):
+    string.split = str.split
 
 try:
     input = raw_input
@@ -20,6 +26,18 @@ except NameError:
 
 
 def ps():
+    """Check a running process on POSIX systems and display formatted process info.
+
+    Preconditions:
+      - Line 41 (input): User input provides process query string (program name).
+      - Line 45 (getoutput): Shell execution (commands.getoutput) yields space-delimited ps line.
+      - Line 46 (split): Whitespace split generates field list 'proginfo' with >= 6 tokens.
+      - Lines 49-65 (format): Positional field mappings (Owner=0, PID=1, PPID=2, Time=4, Path=5).
+      - Line 66 (except): Failure boundary catches exceptions (e.g. IndexError on < 6 tokens).
+
+    Protected condition:
+      - Field indexing and positional mapping integrity across stdout formatting.
+    """
     program = input("Enter the name of the program to check: ")
 
     try:

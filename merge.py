@@ -12,7 +12,23 @@ resultfile = "result.csv"
 
 # the merge func
 def merge():
-    """merge csv files to one file"""
+    """Merge CSV files in current directory to one file.
+
+    Contract:
+        Preconditions:
+            - Source line 18: Relies on global `resultfile` as the output filename.
+            - Source lines 21-25: Scans current directory '.' for files ending with '.csv'
+              excluding `resultfile`.
+            - Source line 28: Opens `resultfile` in write mode ('w'), truncating existing content.
+            - Source line 34: Writes each input file's contents followed by a trailing newline.
+        Inputs:
+            None directly (reads CSV files from the current working directory).
+        Returns:
+            None.
+        Mutation:
+            Creates or overwrites `resultfile` in the current working directory.
+            Emits status messages to stdout.
+    """
 
     # indicates use of a global variable.
     global resultfile

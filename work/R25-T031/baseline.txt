@@ -1,0 +1,34 @@
+Baseline test run
+Date: 2026-11-18
+Python: 3.12.16
+Pytest: 9.2.0
+Git: 2.55.0
+Task: R25-T031
+Command: python3 work/R25-T031/check.py
+
+Target: recursive-fibonacci.py
+Function: fib (line 1)
+
+Independent expected values calculated prior to baseline run:
+- fib(0) = 0  (smallest supported input / base case root)
+- fib(1) = 1  (base case boundary)
+- fib(2) = 1  (repeated-value boundary / recursive transition)
+- fib(5) = 5  (ordinary input)
+- fib(10) = 55 (larger ordinary input)
+
+Baseline Evaluation:
+1. Module imports cleanly via dynamic import (filename contains hyphen).
+2. Function fib exists and accepts argument n.
+3. Executed baseline with fixture values:
+   - fib(0) -> 0 (Match)
+   - fib(1) -> 1 (Match)
+   - fib(2) -> 1 (Match)
+   - fib(5) -> 5 (Match)
+   - fib(10) -> 55 (Match)
+
+Findings:
+- The baseline implementation returns mathematically correct Fibonacci numbers using 0-based indexing for non-negative integers.
+- The original source lacked formal contract documentation (no docstring detailing parameter constraints, return values, or mutation semantics).
+- No regression tests existed in the repository for recursive-fibonacci.py.
+- Next steps: Add concise docstring contract beside fib and establish automated regression checks under work/R25-T031/.
+

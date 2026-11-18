@@ -1,0 +1,23 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.16, pytest-9.2.0, pluggy-1.7.0
+cachedir: .pytest_cache
+rootdir: /Users/rohitchahar/geekcomputers-Python
+collected 14 items
+
+work/R25-T031/test_recursive_fibonacci.py::test_fib_smallest_supported_input_zero PASSED [  7%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_base_case_boundary_one PASSED [ 14%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_repeated_value_boundary_two PASSED [ 21%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_ordinary_input_five PASSED [ 28%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_larger_ordinary_input_ten PASSED [ 35%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_stated_fixture_all[0-0] PASSED [ 42%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_stated_fixture_all[1-1] PASSED [ 50%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_stated_fixture_all[2-1] PASSED [ 57%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_stated_fixture_all[5-5] PASSED [ 64%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_stated_fixture_all[10-55] PASSED [ 71%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_no_observable_mutation PASSED [ 78%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_idempotency_and_pure_function PASSED [ 85%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_external_io_mocked PASSED [ 92%]
+work/R25-T031/test_recursive_fibonacci.py::test_fib_public_interface_and_contract PASSED [100%]
+
+============================== 14 passed in 0.08s ==============================
+

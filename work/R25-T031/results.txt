@@ -1,0 +1,62 @@
+Implementation test results
+Date: 2026-11-18
+Task: R25-T031
+
+Tool versions:
+Python: 3.12.16
+Pytest: 9.2.0
+Git: 2.55.0 (Apple Git-155)
+
+Command:
+python3 work/R25-T031/check.py
+
+Native test execution command:
+/Users/rohitchahar/geekcomputers-Python/.venv/bin/pytest -v /Users/rohitchahar/geekcomputers-Python/work/R25-T031/test_recursive_fibonacci.py
+
+Result:
+14 passed in 0.08s
+
+Stated Fixture Test Cases:
+1. Input: 0 (Smallest supported input)
+   Expected: 0
+   Actual: 0
+   Status: PASS
+
+2. Input: 1 (Base case boundary)
+   Expected: 1
+   Actual: 1
+   Status: PASS
+
+3. Input: 2 (Repeated-value boundary / recursive transition)
+   Expected: 1
+   Actual: 1
+   Status: PASS (fib(2) == fib(1) == 1)
+
+4. Input: 5 (Ordinary input)
+   Expected: 5
+   Actual: 5
+   Status: PASS
+
+5. Input: 10 (Larger ordinary input)
+   Expected: 55
+   Actual: 55
+   Status: PASS
+
+Additional Verified Checks:
+6. Observable Mutation:
+   Input integer unchanged: PASS
+   Module globals unmutated: PASS
+   Status: PASS
+
+7. Idempotency & Pure Function:
+   Multiple successive runs match exactly: PASS
+   Status: PASS
+
+8. External I/O Isolation:
+   Mocked print and file open never called: PASS
+   Status: PASS
+
+9. Public Interface & Contract:
+   Function callable, parameter 'n', docstring present, return type int: PASS
+   Status: PASS
+

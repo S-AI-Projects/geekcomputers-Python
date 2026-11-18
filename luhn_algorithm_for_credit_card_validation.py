@@ -9,6 +9,23 @@ By building this project, you'll gain experience working with numerical computat
 
 
 def verify_card_number(card_number):
+    """Validate a card number using the Luhn checksum algorithm.
+
+    Contract & Determinism:
+        Preconditions:
+            - Source line 25: `card_number[::-1]` requires sequence/string.
+            - Source line 29: `int(digit)` requires numeric characters in string.
+            - Source line 39: `return total % 10 == 0` returns boolean.
+        Purity:
+            - Pure function: zero external dependencies, no I/O, no network,
+              no clock, no global mutation, and no mutable default arguments.
+            - Deterministic: repeated executions with identical inputs produce identical outputs.
+            - Input Isolation: subsequent calls are completely independent of prior calls.
+        Inputs:
+            card_number (str): A string of numeric digits.
+        Returns:
+            bool: True if card number satisfies Luhn check, False otherwise.
+    """
     sum_of_odd_digits = 0
     card_number_reversed = card_number[::-1]
     odd_digits = card_number_reversed[::2]
@@ -38,4 +55,5 @@ def main():
         print("INVALID!")
 
 
-main()
+if __name__ == "__main__":
+    main()

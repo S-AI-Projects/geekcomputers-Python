@@ -20,6 +20,21 @@ user_exit_checker = "exit"
 
 
 def start():
+    """Start the dice rolling simulator flow.
+
+    Contract & Failure Behavior:
+        Preconditions:
+            - Source line 39: `input(">")` waits for Enter to proceed.
+            - Source line 55: `user_dice_chooser = input(">")` receives die selection.
+            - Source line 57: `user_dice_chooser = int(user_dice_chooser)` converts selection.
+        Failure & Rejection Branches:
+            - Source Line 57: Non-numeric inputs raise `ValueError` (invalid integer literal).
+            - Source Line 71: Non-applicable integer inputs (e.g. 0, 5, 99) trigger the fallback
+              rejection branch: prints "Please choose one of the applicable options!" and retries.
+            - Source Line 107: Any exit input other than 'roll' invokes `bye()` to gracefully terminate.
+        Ordinary Path:
+            - Valid options [6, 8, 12] roll the respective die and prompt for retry or exit.
+    """
     print("Welcome to dice rolling simulator: \nPress Enter to proceed")
     input(">")
 
@@ -93,4 +108,5 @@ def user_exit_checker():
 
 
 # Actually starting the program now.
-start()
+if __name__ == "__main__":
+    start()

@@ -1,0 +1,56 @@
+Baseline analysis for R25-T033 — get_players cross-check
+Date: 2026-11-19
+Python: 3.12.16
+Pytest: 9.2.0
+Git: 2.55.0
+Task: R25-T033
+Command: python3 work/R25-T033/check.py
+
+Target: RandomNumberGame.py — get_players (line 28)
+
+Source Analysis:
+=================
+1. Function signature: get_players(n: int) -> List[str]
+2. Location: RandomNumberGame.py, line 28
+3. Implementation (line 46):
+   return [input("Enter name of player: ") for _ in range(n)]
+
+Public Inputs:
+- n (int): Number of players to prompt for.
+
+Return Value:
+- List[str]: A list of exactly n strings, each obtained from input().
+
+Mutation Behavior:
+- None. Pure function (aside from I/O side effects of input/print).
+- No internal state is modified; no external dependencies beyond builtins.input.
+
+External Dependencies:
+- builtins.input: Called n times to collect player names.
+
+Contract (derived from source):
+- For n >= 0: returns a list of exactly n strings.
+- For n == 0: returns an empty list (range(0) produces no iterations).
+- Ordering: Names appear in the order they are entered.
+- No validation/filtering on the name strings themselves.
+
+Independent Oracle Design:
+==========================
+The oracle is a simple function that independently constructs the expected
+result by consuming n items from a mock input iterator — without calling
+get_players itself. This verifies:
+  1. The list has exactly n elements.
+  2. Elements appear in input order.
+  3. The exact string values match what input() would return.
+
+Fixture Anchors (from task):
+  >>> import builtins, random
+  >>> random.seed(0)
+  >>> inputs = iter(["1", "Alice", "50", "49"])
+
+Neighboring supported input derived:
+  inputs = iter(["Bob", "Charlie"]) with n=2
+  Expected: ["Bob", "Charlie"]
+
+Test coverage: 20+ input scenarios enumerated in test file.
+

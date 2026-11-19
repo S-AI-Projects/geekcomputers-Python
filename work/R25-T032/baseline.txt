@@ -1,0 +1,36 @@
+Baseline test run
+Date: 2026-11-18
+Python: 3.12.16
+Pytest: 9.2.0
+Git: 2.55.0
+Task: R25-T032
+Command: python3 work/R25-T032/check.py
+
+Target: simpleInterest.py
+
+Independent expected outputs calculated before implementation:
+1. Smallest valid input (boundary at zero):
+   - Inputs: principle = 0.0, time = 0, rate = 0.0
+   - Calculation: (0.0 * 0 * 0.0) / 100
+   - Expected Output: 0.0
+   - Line citations: Lines 1, 2, 3, 4
+
+2. Ordinary input (interior):
+   - Inputs: principle = 1000.0, time = 2, rate = 5.0
+   - Calculation: (1000.0 * 2 * 5.0) / 100
+   - Expected Output: 100.0
+   - Line citations: Lines 1, 2, 3, 4
+
+3. Smallest positive input:
+   - Inputs: principle = 1.0, time = 1, rate = 1.0
+   - Calculation: (1.0 * 1 * 1.0) / 100
+   - Expected Output: 0.01
+   - Line citations: Lines 1, 2, 3, 4
+
+Baseline Code Analysis:
+- The existing simpleInterest.py executes top-level input() prompts directly at lines 1-3.
+- Importing the file without mocking input() causes an EOFError or hangs waiting for stdin.
+- No modular simpleInterest function was exposed for programmatic regression testing.
+- The formula (principle * time * rate) / 100 at line 4 is mathematically sound.
+- Plan: Define simpleInterest(principle, time, rate) documenting the supported boundaries and guard interactive input under if __name__ == "__main__": to preserve supported CLI behavior and allow focused test execution.
+

@@ -1,0 +1,52 @@
+R25-T033 — get_players Cross-Check Results
+==================================================
+Command: /Users/rohitchahar/geekcomputers-Python/.venv/bin/python3 -m pytest /Users/rohitchahar/geekcomputers-Python/work/R25-T033/test_get_players.py -v --tb=short
+Python version: 3.12.16 (main, Oct 25 2026, 18:24:37) [Clang 21.0.0 (clang-2100.3.34.2)]
+Exit code: 0
+Test count (non-zero): 35
+
+--- stdout ---
+============================= test session starts ==============================
+platform darwin -- Python 3.12.16, pytest-9.2.0, pluggy-1.7.0 -- /Users/rohitchahar/geekcomputers-Python/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/rohitchahar/geekcomputers-Python
+collecting ... collected 35 items
+
+work/R25-T033/test_get_players.py::TestGetPlayersAnchorFixture::test_anchor_fixture_single_player PASSED [  2%]
+work/R25-T033/test_get_players.py::TestGetPlayersAnchorFixture::test_anchor_fixture_neighboring_input PASSED [  5%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n0_empty] PASSED [  8%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n1_alice] PASSED [ 11%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n1_bob] PASSED [ 14%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n1_empty_string] PASSED [ 17%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n1_single_char] PASSED [ 20%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n1_with_space] PASSED [ 22%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n2_alice_bob] PASSED [ 25%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n2_zoe_amy] PASSED [ 28%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n2_empty_strings] PASSED [ 31%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n2_hyphenated] PASSED [ 34%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n3_abc] PASSED [ 37%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n3_alice_bob_charlie] PASSED [ 40%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n3_foo_bar_baz] PASSED [ 42%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n4_p1234] PASSED [ 45%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n5_abcde] PASSED [ 48%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n1_leading_trailing_spaces] PASSED [ 51%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n1_numeric_string] PASSED [ 54%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n1_underscore] PASSED [ 57%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n1_camelcase] PASSED [ 60%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n2_upper_lower] PASSED [ 62%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n3_duplicate_names] PASSED [ 65%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n1_unicode_japanese] PASSED [ 68%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n2_unicode_latin] PASSED [ 71%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n6_six_players] PASSED [ 74%]
+work/R25-T033/test_get_players.py::test_get_players_cross_check[n7_seven_players] PASSED [ 77%]
+work/R25-T033/test_get_players.py::TestGetPlayersReproducibility::test_reproducibility_single_player PASSED [ 80%]
+work/R25-T033/test_get_players.py::TestGetPlayersReproducibility::test_reproducibility_multiple_players PASSED [ 82%]
+work/R25-T033/test_get_players.py::TestGetPlayersReproducibility::test_reproducibility_empty PASSED [ 85%]
+work/R25-T033/test_get_players.py::TestGetPlayersOrdering::test_order_is_preserved PASSED [ 88%]
+work/R25-T033/test_get_players.py::TestGetPlayersOrdering::test_reverse_order PASSED [ 91%]
+work/R25-T033/test_get_players.py::TestGetPlayersReturnContract::test_returns_list PASSED [ 94%]
+work/R25-T033/test_get_players.py::TestGetPlayersReturnContract::test_returns_strings PASSED [ 97%]
+work/R25-T033/test_get_players.py::TestGetPlayersReturnContract::test_length_matches_n PASSED [100%]
+
+============================== 35 passed in 0.03s ==============================
+

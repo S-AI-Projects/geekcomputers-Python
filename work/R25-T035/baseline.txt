@@ -1,0 +1,92 @@
+Baseline analysis for R25-T035 — Make verification repeatable for get likes on FB (get_likes_on_FB.py)
+Date: 2026-11-21
+Python: 3.12.16
+Pytest: 9.2.0
+Git: 2.55.0
+Task: R25-T035
+Command: python3 work/R25-T035/check.py
+
+Target: get_likes_on_FB.py — get likes on FB (line 1)
+
+Source Analysis & Dependency Audit:
+===================================
+1. Public Inputs:
+   - userId: sys.argv[1] (string, command-line argument) [line 8]
+   - accessToken: string, hardcoded default "TOKENVALUE" [line 7]
+   - limit: integer, hardcoded default 100 [line 9]
+   - Network endpoint: constructed URL "https://graph.facebook.com/" + userId + "/posts?access_token=" + accessToken + "&limit=" + str(limit) [lines 11-18]
+
+2. Public Result / Return:
+   - In original script: Prints formatted post statistics to stdout:
+     * Line 22: prints initial "0" (str(id))
+     * Lines 38-48: prints tab-separated post record:
+       str(id) + "\t" + time + "\t" + date + "\t" + year + "\t" + str(num_share) + "\t" + str(num_like)
+   - Function seam returns parsed records: list of dicts with keys (id, time, date, year, shares, likes, formatted).
+
+3. Mutation Behavior:
+   - No global mutable state or persistent cache.
+   - Variable `id` is incremented per record [line 37].
+   - Pure calculation logic once response data is obtained.
+
+4. External Dependencies Identified:
+   - CLI input: sys.argv[1] (causes IndexError if imported without arguments) [line 8]
+   - Network I/O: urllib.urlopen(url) (calls live Facebook Graph API) [line 19]
+   - Serialization: json.load() [line 19]
+   - Console I/O: print() to stdout [lines 22, 38-48]
+
+Dependency Seam Strategy:
+=========================
+- Encapsulate logic in `get_likes_on_FB(userId, accessToken="TOKENVALUE", limit=100, opener=None)`.
+- Dependency injection parameter `opener`:
+  * Default: None (falls back to urllib.request.urlopen in Python 3 / urllib.urlopen in Python 2), preserving existing caller contracts.
+  * Testing: Injects mock opener or file-like response, avoiding any live network access.
+- CLI execution guarded under `if __name__ == "__main__":` so the module can be imported cleanly without IndexError.
+
+Fixture & Source Preconditions:
+===============================
+1. Precondition Source Line 8: `userId = sys.argv[1]` requires a string userId.
+2. Precondition Source Line 7: `accessToken = "TOKENVALUE"` default token.
+3. Precondition Source Line 9: `limit = 100` default post limit.
+4. Precondition Source Lines 11-18: URL format `https://graph.facebook.com/{userId}/posts?access_token={accessToken}&limit={limit}`.
+5. Precondition Source Line 19: `data = json.load(urllib.urlopen(url))` requires JSON response with dict structure.
+6. Precondition Source Line 24: `data["data"]` must be a list of post objects.
+7. Precondition Source Lines 25-27:
+   - `item["created_time"][11:19]` requires substring of time (HH:MM:SS).
+   - `item["created_time"][5:10]` requires substring of date (MM-DD).
+   - `item["created_time"][0:4]` requires substring of year (YYYY).
+   - Precondition: `created_time` must be at least 19 characters.
+8. Precondition Source Lines 29-32: `if "shares" in item:` extract `item["shares"]["count"]`, else 0.
+9. Precondition Source Lines 33-36: `if "likes" in item:` extract `item["likes"]["count"]`, else 0.
+10. Precondition Source Line 37: `id += 1` sequential post identifier.
+
+Test Fixtures:
+==============
+Fixture A — Smallest Valid Input:
+- Input: userId="4", data={"data": [{"created_time": "2026-01-01T00:00:00"}]} (minimal valid post, no shares/likes keys)
+- Expected calculation:
+  * time = "00:00:00" [line 25]
+  * date = "01-01" [line 26]
+  * year = "2026" [line 27]
+  * num_share = 0 [line 32]
+  * num_like = 0 [line 36]
+  * id = 1 [line 37]
+- Expected formatted line: "1\t00:00:00\t01-01\t2026\t0\t0"
+- Expected stdout: "0\n1\t00:00:00\t01-01\t2026\t0\t0\n"
+
+Fixture B — Ordinary Input:
+- Input: userId="4", data={"data": [{"created_time": "2026-11-21T15:30:45", "shares": {"count": 25}, "likes": {"count": 150}}]}
+- Expected calculation:
+  * time = "15:30:45" [line 25]
+  * date = "11-21" [line 26]
+  * year = "2026" [line 27]
+  * num_share = 25 [line 30]
+  * num_like = 150 [line 34]
+  * id = 1 [line 37]
+- Expected formatted line: "1\t15:30:45\t11-21\t2026\t25\t150"
+- Expected stdout: "0\n1\t15:30:45\t11-21\t2026\t25\t150\n"
+
+Isolation & Repeatability Verification Plan:
+===========================================
+1. Repeatability: Execute Fixture A twice in fresh isolated state; assert result1 == result2.
+2. Input Isolation: Execute Fixture A, then execute Fixture B (different valid input), then execute Fixture A again; assert result == result1.
+3. No live network: All tests supply mock responses; no real network access, user account, or GUI needed.

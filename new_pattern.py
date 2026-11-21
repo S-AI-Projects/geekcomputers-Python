@@ -1,5 +1,19 @@
 def main():
-    """Main function that gets user input and calls the pattern generation function."""
+    """Main function that gets user input and calls the pattern generation function.
+
+    Contract & Invariants:
+    - Input: Prompts via builtins.input for a non-negative integer string.
+    - Output: Prints the generated pattern to stdout followed by a newline.
+    - Determinism: Given identical input, repeated executions yield identical output.
+    - Invariants for valid input lines = n (n >= 0):
+      * Line count: For n == 0, prints an empty line; for n > 0, outputs exactly n lines.
+      * Character symmetry: count('@') == count('$') == n * (n + 1) // 2.
+      * Per-line structure: Line k (0 <= k < n) has (n - k) '@' characters,
+        exactly 4 spaces, and (k + 1) '$' characters (total length: n + 5).
+    - Smallest testable cases:
+      * n = 0: smallest valid boundary (empty pattern).
+      * n = 1: smallest positive pattern ('@    $'), smallest failing example if mutated.
+    """
     try:
         lines = int(input("Enter number of lines: "))
         if lines < 0:
@@ -27,6 +41,11 @@ def pattern(lines: int) -> str:
 
     Raises:
         ValueError: If lines is negative
+
+    Invariants for lines = n (n >= 0):
+        - Output consists of n newline-separated lines (empty string if n == 0).
+        - Symmetric character counts: count('@') == count('$') == n * (n + 1) // 2.
+        - Per-line invariant: line k (0 <= k < n) matches format '@'*(n-k) + '    ' + '$'*(k+1).
 
     Examples:
     >>> print(pattern(3))

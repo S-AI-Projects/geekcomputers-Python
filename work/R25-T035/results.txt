@@ -1,0 +1,26 @@
+R25-T035 — get_likes_on_FB Verification Results
+============================================================
+Command: /Users/rohitchahar/geekcomputers-Python/.venv/bin/python3 -m pytest /Users/rohitchahar/geekcomputers-Python/work/R25-T035/test_get_likes_on_fb.py -v --tb=short
+Python version: 3.12.16 (main, Oct 25 2026, 18:24:37) [Clang 21.0.0 (clang-2100.3.34.2)]
+Exit code: 0
+Passed tests: 8
+Failed tests: 0
+Total test count: 8
+
+--- stdout ---
+============================= test session starts ==============================
+platform darwin -- Python 3.12.16, pytest-9.2.0, pluggy-1.7.0 -- /Users/rohitchahar/geekcomputers-Python/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/rohitchahar/geekcomputers-Python
+collecting ... collected 8 items
+
+work/R25-T035/test_get_likes_on_fb.py::TestGetLikesContractAndFixtures::test_smallest_valid_input PASSED [ 12%]
+work/R25-T035/test_get_likes_on_fb.py::TestGetLikesContractAndFixtures::test_ordinary_input PASSED [ 25%]
+work/R25-T035/test_get_likes_on_fb.py::TestRepeatabilityInFreshState::test_repeatability_smallest_valid_input PASSED [ 37%]
+work/R25-T035/test_get_likes_on_fb.py::TestRepeatabilityInFreshState::test_repeatability_ordinary_input PASSED [ 50%]
+work/R25-T035/test_get_likes_on_fb.py::TestInputIsolation::test_input_isolation_after_intervening_call PASSED [ 62%]
+work/R25-T035/test_get_likes_on_fb.py::TestInputIsolation::test_input_isolation_multi_item_intervening PASSED [ 75%]
+work/R25-T035/test_get_likes_on_fb.py::TestDependencySeamAndContract::test_url_construction_matches_contract PASSED [ 87%]
+work/R25-T035/test_get_likes_on_fb.py::TestDependencySeamAndContract::test_default_parameters_preserve_callers PASSED [100%]
+
+============================== 8 passed in 0.07s ===============================

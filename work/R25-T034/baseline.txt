@@ -1,0 +1,93 @@
+Baseline analysis for R25-T034 — Test an invariant of main (new_pattern.py)
+Date: 2026-11-21
+Python: 3.12.16
+Pytest: 9.2.0
+Git: 2.55.0
+Task: R25-T034
+Command: python3 work/R25-T034/check.py
+
+Target: new_pattern.py — main() (line 1) and pattern() (line 17)
+
+Source Analysis:
+=================
+1. Function signature:
+   - main() -> None
+   - pattern(lines: int) -> str
+2. Location: new_pattern.py, line 1 (main) and line 17 (pattern)
+3. Implementation of main():
+   def main():
+       try:
+           lines = int(input("Enter number of lines: "))
+           if lines < 0:
+               raise ValueError("Number of lines must be non-negative")
+           result = pattern(lines)
+           print(result)
+       except ValueError as e:
+           if "invalid literal" in str(e):
+               print(f"Error: Please enter a valid integer number. {e}")
+           else:
+               print(f"Error: {e}")
+       except Exception as e:
+           print(f"An unexpected error occurred: {e}")
+
+Public Inputs:
+- None directly as arguments.
+- Reads user input via builtins.input("Enter number of lines: ").
+- Expects a string representing a non-negative integer (e.g., "0", "1", "3").
+
+Return Value:
+- None.
+
+Mutation Behavior:
+- No global variables, attributes, or mutable parameters are modified.
+- Pure with respect to memory; only standard I/O side effects (stdin read, stdout write).
+
+External Dependencies:
+- builtins.input: Prompts for line count.
+- builtins.print / sys.stdout: Outputs pattern string or error message.
+
+Fixture Anchors (from task specification):
+==========================================
+1. print(pattern(3)):
+   @@@    $
+   @@    $$
+   @    $$$
+   Output via main() with input "3": "@@@    $\n@@    $$\n@    $$$\n"
+
+2. print(pattern(1)):
+   @    $
+   Output via main() with input "1": "@    $\n"
+
+3. print(pattern(0)):
+   <BLANKLINE>
+   Output via main() with input "0": "\n"
+
+Neighboring Supported Input (derived independently):
+===================================================
+Input lines = 2 (derived between anchors 1 and 3):
+- Line 1 (i=2): "@" * 2 + "    " + "$" * (2 - 2 + 1) = "@@    $"
+- Line 2 (i=1): "@" * 1 + "    " + "$" * (2 - 1 + 1) = "@    $$"
+- Full pattern: "@@    $\n@    $$"
+- Output via main() with input "2": "@@    $\n@    $$\n"
+
+Invariant Specification:
+========================
+For any valid input lines = n (n >= 0):
+1. Determinism / Idempotence: Repeated calls with fresh equivalent input yield identical output.
+2. Line Count: For n > 0, output has exactly n lines. For n == 0, output has 1 empty line ("\n").
+3. Character Conservation / Symmetry:
+   - Total '@' count == n * (n + 1) // 2.
+   - Total '$' count == n * (n + 1) // 2.
+   - Total '@' == Total '$'.
+4. Per-Line Invariant:
+   - Line k (0 <= k < n) starts with (n - k) '@' chars, followed by exactly 4 spaces ("    "), followed by (k + 1) '$' chars.
+   - Line length is invariant at (n + 5) characters.
+5. Explicit Expected Value:
+   - Independent oracle computes explicit expected output; main() output matches exactly.
+
+Smallest Failing Example:
+=========================
+- When an invariant is broken (e.g. 3 spaces instead of 4, or '#' instead of '@'):
+  n = 1 is the smallest positive failing example.
+  Expected: "@    $\n" (len 7)
+  Mutated (3 spaces): "@   $\n" (len 6) -> immediately fails line structure, spacing, and length assertions.

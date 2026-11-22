@@ -1,0 +1,50 @@
+{
+  "100": {
+    "input_size_d": 100,
+    "repetitions": 5,
+    "timings_ns": [
+      1125,
+      625,
+      583,
+      416,
+      417
+    ],
+    "median_ns": 583,
+    "range_ns": 709,
+    "min_ns": 416,
+    "max_ns": 1125,
+    "all_correct": true
+  },
+  "1000": {
+    "input_size_d": 1000,
+    "repetitions": 5,
+    "timings_ns": [
+      4708,
+      4416,
+      5750,
+      4208,
+      4208
+    ],
+    "median_ns": 4416,
+    "range_ns": 1542,
+    "min_ns": 4208,
+    "max_ns": 5750,
+    "all_correct": true
+  },
+  "3000": {
+    "input_size_d": 3000,
+    "repetitions": 5,
+    "timings_ns": [
+      28875,
+      40208,
+      29458,
+      29375,
+      29500
+    ],
+    "median_ns": 29458,
+    "range_ns": 11333,
+    "min_ns": 28875,
+    "max_ns": 40208,
+    "all_correct": true
+  }
+}

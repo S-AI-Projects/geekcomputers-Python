@@ -2,7 +2,10 @@
 
 import random
 
-import simplegui
+try:
+    import simplegui
+except ImportError:
+    simplegui = None
 
 WIDTH = 600
 HEIGHT = 400
@@ -21,13 +24,31 @@ paddle1_vel = 0
 paddle2_vel = 0
 
 
+def compute_ball_velocity(direction, rand_fn=None):
+    """Computes the initial velocity vector [vx, vy] based on launch direction.
+
+    Preconditions & Invariants:
+        - Direction RIGHT assigns positive horizontal velocity in range [120/60, 240/60] = [2.0, 4.0].
+        - Direction LEFT assigns negative horizontal velocity in range [-240/60, -120/60] = [-4.0, -2.0].
+        - Vertical velocity is always positive in range [60/60, 180/60] = [1.0, 3.0].
+
+    Simplification:
+        Extracts velocity vector derivation into a single coherent calculation,
+        decoupling vector mathematics from global game-state mutations.
+    """
+    rf = rand_fn if rand_fn is not None else random.randrange
+    horiz_speed = rf(120, 240) / 60
+    vert_speed = rf(60, 180) / 60
+    vx = horiz_speed if direction == RIGHT else -horiz_speed
+    vy = vert_speed
+    return [vx, vy]
+
+
 def spawn_ball(direction):
+    """Spawns ball at center table and assigns initial velocity according to direction."""
     global ball_pos, ball_vel  # these are vectors stored as lists
     ball_pos = [WIDTH / 2, HEIGHT / 2]
-    if direction == RIGHT:
-        ball_vel = [random.randrange(120, 240) / 60, random.randrange(60, 180) / 60]
-    elif direction == LEFT:
-        ball_vel = [-random.randrange(120, 240) / 60, random.randrange(60, 180) / 60]
+    ball_vel = compute_ball_velocity(direction)
 
 
 def reset():
@@ -142,12 +163,13 @@ def keyup(key):
         paddle2_vel = 0
 
 
-frame = simplegui.create_frame("Pong", WIDTH, HEIGHT)
-frame.set_draw_handler(draw)
-frame.set_keydown_handler(keydown)
-frame.set_keyup_handler(keyup)
-frame.add_button("Restart", reset)
+if simplegui is not None:
+    frame = simplegui.create_frame("Pong", WIDTH, HEIGHT)
+    frame.set_draw_handler(draw)
+    frame.set_keydown_handler(keydown)
+    frame.set_keyup_handler(keyup)
+    frame.add_button("Restart", reset)
 
-new_game()
-print()
-frame.start()
+    new_game()
+    print()
+    frame.start()

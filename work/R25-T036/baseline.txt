@@ -1,0 +1,84 @@
+Baseline analysis for R25-T036 — Simplify one responsibility in gcd (gcd.py)
+Date: 2026-11-22
+Python: 3.12.16
+Pytest: 9.2.0
+Git: 2.55.0
+Task: R25-T036
+Command: python3 work/R25-T036/check.py
+
+Target: gcd.py — gcd near line 1
+
+Source Analysis (Before Refactoring):
+====================================
+1. Original Implementation:
+   ```python
+   a = int(input("Enter number 1 (a): "))
+   b = int(input("Enter number 2 (b): "))
+
+   i = 1
+   gcd = -1
+   while i <= a and i <= b:
+       if a % i == 0 and b % i == 0:
+           gcd = i
+       i = i + 1
+
+   print("\nGCD of {0} and {1} = {2}".format(a, b, gcd))
+   ```
+
+2. Public Inputs:
+   - Integers `a` and `b` (originally parsed from builtins.input via int()) [lines 6, 7].
+3. Result / Return:
+   - The greatest integer `i >= 1` dividing both `a` and `b` [lines 10-14].
+   - If no divisor found (e.g. non-positive input), defaults to -1 [line 10].
+   - Formatted output string printed to stdout [line 16].
+4. Mutation Behavior:
+   - Pure mathematical search algorithm. No mutable objects or global side effects.
+5. External Dependencies:
+   - builtins.input: prompts for input strings [lines 6, 7].
+   - builtins.print / stdout: prints formatted output [line 16].
+
+Source Precondition Citations:
+==============================
+- Line 6: `a = int(input("Enter number 1 (a): "))` -> a must be integer-compatible.
+- Line 7: `b = int(input("Enter number 2 (b): "))` -> b must be integer-compatible.
+- Line 9: `i = 1` -> search starts at divisor candidate 1.
+- Line 10: `gcd = -1` -> initial sentinel value when no valid divisor satisfies loop condition.
+- Line 11: `while i <= a and i <= b:` -> search range bounded above by min(a, b).
+- Line 12: `if a % i == 0 and b % i == 0:` -> divisibility check responsibility.
+- Line 13: `gcd = i` -> updates running greatest common divisor.
+- Line 14: `i = i + 1` -> linear iteration step.
+- Line 16: `print("\nGCD of {0} and {1} = {2}".format(a, b, gcd))` -> formatted output.
+
+Target Responsibility for Simplification:
+=========================================
+- Responsibility: Common divisor divisibility check `(a % i == 0 and b % i == 0)`.
+- Refactoring:
+  1. Encapsulate the core linear-search algorithm in `def gcd(a, b) -> int:`.
+  2. Extract the common divisor check into a dedicated helper function `is_common_divisor(i, a, b)`
+     (and/or explicit named boolean predicate `is_common = (a % i == 0 and b % i == 0)`).
+  3. Guard the CLI interactive prompt under `if __name__ == "__main__":` so the function can be
+     imported and tested cleanly without blocking on stdin.
+- Readability Improvement:
+  Separates the semantic condition "is `i` a common divisor of both `a` and `b`" from the loop iteration
+  and accumulator state update in `gcd`.
+
+Fixture Assertions (Task Specified):
+====================================
+1. Fixture (54, 24):
+   - Divisors of 54: 1, 2, 3, 6, 9, 18, 27, 54
+   - Divisors of 24: 1, 2, 3, 4, 6, 8, 12, 24
+   - Common divisors: 1, 2, 3, 6
+   - Expected Result: 6 (Preconditions: lines 9-14)
+2. Fixture (17, 13):
+   - Both are prime numbers.
+   - Common divisor: 1
+   - Expected Result: 1 (Preconditions: lines 9-14)
+3. Fixture (9, 9):
+   - Equal arguments.
+   - Common divisors: 1, 3, 9
+   - Expected Result: 9 (Preconditions: lines 9-14)
+4. Zero Argument Behavior:
+   - For a = 0 or b = 0 (e.g. (0, 5), (5, 0), (0, 0)):
+   - Loop condition `i <= a and i <= b` is False on initial i = 1 because 1 <= 0 is False.
+   - The loop never executes, and the initial value -1 is returned.
+   - Expected Result: -1 (Preconditions: lines 10, 11)

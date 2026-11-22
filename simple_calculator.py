@@ -16,7 +16,28 @@ Example usage:
 
 
 def add(x: float, y: float) -> float:
-    """Return the sum of x and y."""
+    """Return the sum of x and y.
+
+    Preconditions & Contract:
+        - Precondition (Source line 18): x and y must be numeric types (int or float) supporting addition.
+        - Return Contract (Source line 20): returns the scalar sum of x and y.
+        - Purity: Pure mathematical function with zero side effects and zero external dependencies.
+
+    Decisive State Transition:
+        The function transitions from two independent input operand states (x, y)
+        to a single synthesized scalar sum through evaluation of the binary addition
+        operator (x + y). The resulting value is returned directly to the caller.
+
+    Examples:
+        >>> add(2, 3)
+        5
+        >>> add(2.5, 3.5)
+        6.0
+        >>> add(0, 0)
+        0
+        >>> add(-5, 5)
+        0
+    """
     return x + y
 
 

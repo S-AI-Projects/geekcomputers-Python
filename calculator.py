@@ -23,20 +23,37 @@ convert degrees to radians : rad(deg)
 absolute value             : aval(n)
 """
 
+import math
 import sys
 
-## Imported math library to run sin(), cos(), tan() and other such functions in the calculator
-
-from fileinfo import raw_input
+try:
+    if sys.version_info.major < 3:
+        from fileinfo import raw_input
+    else:
+        raw_input = input
+except Exception:
+    raw_input = input
 
 
 def calc(term):
-    """
-    input: term of type str
-    output: returns the result of the computed term.
-    purpose: This function is the actual calculator and the heart of the application
-    """
+    """Computes mathematical expression from string term using sanitized eval.
 
+    Contract:
+        Preconditions (source citations from calculator.py baseline):
+            - Line 33: Accepts a string expression `term`.
+            - Line 41: `term.replace(" ", "")` removes whitespace characters.
+            - Line 42: `term.replace("^", "**")` replaces caret with Python exponent operator.
+            - Line 45: `term.replace("%", "/100.00")` converts percentage symbol to decimal division.
+            - Line 46: `term.replace("rad", "radians")` converts rad shorthand.
+            - Line 47: `term.replace("mod", "%")` converts mod to Python modulo.
+            - Line 48: `term.replace("aval", "abs")` converts aval shorthand.
+            - Lines 50-62: Anchors scientific functions and prefixes with 'math.'.
+            - Line 67: Evaluates arithmetic string via `eval(term)`.
+        Inputs:
+            term (str): Raw mathematical expression string.
+        Returns:
+            int, float, or str (on error message): Result of calculation.
+    """
     # This part is for reading and converting function expressions.
     term = term.lower()
 
@@ -110,19 +127,11 @@ def main():
         + "- 12mod3\n\nEnter quit to exit"
     )
 
-    if sys.version_info.major >= 3:
-        while True:
-            k = input("\nWhat is ")
-            if k == "quit":
-                break
-            result(k)
-
-    else:
-        while True:
-            k = raw_input("\nWhat is ")
-            if k == "quit":
-                break
-            result(k)
+    while True:
+        k = raw_input("\nWhat is ")
+        if k == "quit":
+            break
+        result(k)
 
 
 if __name__ == "__main__":
